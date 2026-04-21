@@ -199,10 +199,10 @@ export default function FollowupPage() {
   const exportStatus = () => {
     if (!leads.length) return;
 
-    const rows = [["No", "Nama", "No WhatsApp", "Kota", "Usia", "Pekerjaan", "Status", "Batch"]];
+    const rows: (string | undefined)[][] = [["No", "Nama", "No WhatsApp", "Kota", "Usia", "Pekerjaan", "Status", "Batch"]];
     leads.forEach((l, i) => {
       const batchName = batches.find(b => b.id === l.batch_id)?.name || "";
-      rows.push([String(i + 1), l.name, l.phone, l.city, l.age, l.job, l.status, batchName]);
+      rows.push([(i + 1).toString(), l.name, l.phone, l.city, l.age, l.job, l.status, batchName]);
     });
 
     const ws = XLSX.utils.aoa_to_sheet(rows);
