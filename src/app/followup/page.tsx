@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   getUser, getProfile, getBatch, getBatches, getLeadsByBatch, getAllLeads,
@@ -14,7 +14,7 @@ import * as XLSX from "xlsx";
 
 const PER_PAGE = 50;
 
-export default function FollowupPage() {
+function FollowupContent() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -480,5 +480,13 @@ export default function FollowupPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function FollowupPage() {
+  return (
+    <Suspense fallback={<div className="loading-screen">Loading...</div>}>
+      <FollowupContent />
+    </Suspense>
   );
 }

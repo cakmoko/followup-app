@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as XLSX from "xlsx";
 import { getUser, getProfile, getTemplates, createBatch, createLeads, signOut, findColumns } from "@/lib/db";
 import { Template, User, Lead, LeadStatus } from "@/types";
 import Link from "next/link";
 
-export default function ImportPage() {
+function ImportContent() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -260,5 +260,13 @@ export default function ImportPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function ImportPage() {
+  return (
+    <Suspense fallback={<div className="loading-screen">Loading...</div>}>
+      <ImportContent />
+    </Suspense>
   );
 }
