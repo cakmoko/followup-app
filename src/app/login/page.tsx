@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "@/lib/db";
+import { signIn, resetPassword } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -10,6 +10,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showReset, setShowReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,6 +31,24 @@ export default function LoginPage() {
     setLoading(false);
   };
 
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setResetSuccess("");
+    setResetLoading(true);
+
+    try {
+      await resetPassword(resetEmail);
+      setResetSuccess("Email reset password telah dikirim. Silakan cek inbox Anda.");
+      setShowReset(false);
+      setResetEmail("");
+    } catch (err: any) {
+      setError(err.message || "Gagal mengirim email reset password");
+    }
+
+    setResetLoading(false);
+  };
+
   return (
     <div className="auth-page">
       <div className="auth-card">
@@ -38,35 +60,76 @@ export default function LoginPage() {
         <h1 className="auth-title">FollowUp<span>Tool</span></h1>
         <p className="auth-subtitle">Masuk untuk mengelola follow-up WhatsApp</p>
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          {error && <div className="auth-error">{error}</div>}
+        {showReset ? (
+          <form onSubmit={handleResetPassword} className="auth-form">
+            {error && <div className="auth-error">{error}</div>}
+            <p style={{ marginBottom: "1rem", color: "#666", textAlign: "center" }}>
+              Masukkan email Anda untuk reset password
+            </p>
 
-          <div className="auth-field">
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="email@contoh.com"
-              required
-            />
-          </div>
+            <div className="auth-field">
+              <label>Email</label>
+              <input
+                type="email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                placeholder="email@contoh.com"
+                required
+              />
+            </div>
 
-          <div className="auth-field">
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Masukkan password"
-              required
-            />
-          </div>
+            <button type="submit" className="auth-btn" disabled={resetLoading}>
+              {resetLoading ? "Loading..." : "Kirim Email Reset"}
+            </button>
 
-          <button type="submit" className="auth-btn" disabled={loading}>
-            {loading ? "Loading..." : "Masuk"}
-          </button>
-        </form>
+            <button
+              type="button"
+              className="auth-btn-secondary"
+              onClick={() => setShowReset(false)}
+            >
+              Kembali ke Login
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleSubmit} className="auth-form">
+            {error && <div className="auth-error">{error}</div>}
+            {resetSuccess && <div className="auth-success">{resetSuccess}</div>}
+
+            <div className="auth-field">
+              <label>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="email@contoh.com"
+                required
+              />
+            </div>
+
+            <div className="auth-field">
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Masukkan password"
+                required
+              />
+            </div>
+
+            <button type="submit" className="auth-btn" disabled={loading}>
+              {loading ? "Loading..." : "Masuk"}
+            </button>
+
+            <button
+              type="button"
+              className="auth-link-btn"
+              onClick={() => setShowReset(true)}
+            >
+              Lupa Password?
+            </button>
+          </form>
+        )}
 
         <div className="auth-links">
           <Link href="/register">Belum punya akun? Daftar</Link>

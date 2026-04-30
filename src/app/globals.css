@@ -41,8 +41,11 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); colo
 .auth-btn { padding: 14px; background: var(--green); color: #000; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
 .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .auth-error { background: var(--red-bg); border: 1px solid var(--red); color: var(--red); padding: 10px; border-radius: 8px; font-size: 13px; }
+.auth-success { background: var(--green-bg); border: 1px solid var(--green); color: var(--green); padding: 10px; border-radius: 8px; font-size: 13px; }
 .auth-links { text-align: center; margin-top: 20px; }
 .auth-links a { color: var(--blue); font-size: 13px; }
+.auth-link-btn { background: none; border: none; color: var(--blue); font-size: 13px; cursor: pointer; text-align: center; padding: 8px 0; }
+.auth-btn-secondary { padding: 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
 
 /* App Container */
 .app-container { min-height: 100vh; }
