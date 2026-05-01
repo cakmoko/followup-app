@@ -103,9 +103,13 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        <div className="auth-links">
-          <Link href="/login">Sudah punya akun? Masuk</Link>
+        <div className="auth-divider">
+          <span>atau</span>
         </div>
+
+        <Link href="/login" className="auth-register-btn">
+          Sudah punya akun? <strong>Masuk</strong>
+        </Link>
       </div>
     </div>
   );

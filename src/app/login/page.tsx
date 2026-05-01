@@ -131,9 +131,13 @@ export default function LoginPage() {
           </form>
         )}
 
-        <div className="auth-links">
-          <Link href="/register">Belum punya akun? Daftar</Link>
+        <div className="auth-divider">
+          <span>atau</span>
         </div>
+
+        <Link href="/register" className="auth-register-btn">
+          Belum punya akun? <strong>Daftar Sekarang</strong>
+        </Link>
       </div>
     </div>
   );
